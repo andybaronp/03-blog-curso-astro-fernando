@@ -1,4 +1,4 @@
-import { z, defineCollection } from 'astro:content'
+import { z, defineCollection, reference } from 'astro:content'
 
 const blogColletion = defineCollection({
   type: 'content',
@@ -11,12 +11,22 @@ const blogColletion = defineCollection({
         message: 'La imagen debe ser de al menos  1400px de ancho',
       }),
       //relacion
-      author: z.string(),
+      // author: z.string(),
       //relacion
       tags: z.array(z.string()),
+      author: reference('author'),
     }),
 })
 
+const authorCollection = defineCollection({
+  type: 'data',
+  schema: ({ image }) =>
+    z.object({
+      name: z.string(),
+      avatar: image(),
+    }),
+})
 export const collections = {
-  'blog': blogColletion,
+  blog: blogColletion,
+  author: authorCollection,
 }

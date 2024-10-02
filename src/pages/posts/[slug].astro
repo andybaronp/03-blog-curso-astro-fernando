@@ -1,30 +1,48 @@
 ---
 import type { GetStaticPaths } from "astro";
 import { Image } from "astro:assets";
+import { getEntry } from "astro:content";
 import { getCollection } from "astro:content";
 import BlogLayout from "src/layouts/BlogLayout.astro";
 
 
 export const getStaticPaths = (async() => {
   const posts = await getCollection('blog' )
-  
+   
+   return posts.map((post) =>  {
+     
+    return({
+    params: {
+       slug: post.slug, 
+       
+      },
+      props: { post: post ,
+     
 
-  return posts.map((post) => ({
-    params: { slug: post.slug },
-    props: { post: post  },
-  }));
+     },
+  })
+  });
 }) satisfies GetStaticPaths;
 
-const { post } = Astro.props
+const { post,  } = Astro.props
 const frontmatter = post.data
+
 const { Content,headings }  = await post.render()
 
+const author = await getEntry('author',post.data.author.id)
 
 ---
 
 <BlogLayout  title={frontmatter.title}>
    <h1 class="text-xs text-gray-500 mb-0">{frontmatter.title}</h1>
-   <h4 class="text-md text-gray-400 mb-0">{frontmatter.author}</h4>
+   <div class="text-lg p-2 text-blue-600">
+     <Image width={50} height={50} src={author.data.avatar} alt={author.data.name} class={'rounded-full '}     />
+     <div>
+      <a href={`/blog/${frontmatter.author.id}`}>
+        {author.data.name} 
+      </a>
+     </div>
+   </div>
 
    <Image width={600} height={200} src={frontmatter.image} alt={frontmatter.title}
    transition:name=`${post.slug}-image`
