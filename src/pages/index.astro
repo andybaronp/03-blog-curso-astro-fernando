@@ -1,39 +1,37 @@
 ---
-import { siteConfig } from "../config/site-config";
-import MainLayout from "../layouts/MainLayout.astro";
+import { siteConfig } from '../config/site-config'
+import MainLayout from '../layouts/MainLayout.astro'
 
-import  BlogPost from "../components/BlogPost.astro";
-import { getCollection,  } from 'astro:content'
-import TypedBloPost from "src/components/TypedBloPost.astro";
-const allBlogPosts = await getCollection('blog');
-
-
-
+import { getCollection } from 'astro:content'
+import TypedBloPost from 'src/components/TypedBloPost.astro'
+const allBlogPosts = await getCollection(
+  'blog',
+  (post) => post.data.isDraft === false,
+)
 ---
 
-<MainLayout title="Home">
-	 <!-- component -->
-<section class="bg-white dark:bg-gray-900">
-	<div class="container px-6 py-10 mx-auto">
-			<h1 class="text-3xl font-semibold text-gray-800 capitalize lg:text-4xl dark:text-white mb-2">{siteConfig.title}</h1>
+<MainLayout title='Home'>
+  <!-- component -->
+  <section class='bg-white dark:bg-gray-900'>
+    <div class='container px-6 py-10 mx-auto'>
+      <h1
+        class='text-3xl font-semibold text-gray-800 capitalize lg:text-4xl dark:text-white mb-2'
+      >
+        {siteConfig.title}
+      </h1>
 
-			<a href="/blog/1" >Blog paginado</a>
-			<div class="grid grid-cols-1 gap-8 mt-8 md:mt-16 md:grid-cols-2">
-		 
-			{
-				allBlogPosts.map((post ) => (
-					 <TypedBloPost post={post} />
-				))
-			} 
-			 
-				</div>
-	</div>
-</section>
+      <a href='/blog/1'>Blog paginado</a>
+      <a href='/authors'>Autores</a>
+      <div class='grid grid-cols-1 gap-8 mt-8 md:mt-16 md:grid-cols-2'>
+        {allBlogPosts.map((post) => <TypedBloPost post={post} />)}
+      </div>
+    </div>
+  </section>
 </MainLayout>
 
 <style>
   a {
-    @apply bg-blue-500 text-white p-2 rounded hover:bg-blue-600 cursor-pointer  ;
+    @apply bg-blue-500 text-white p-2 rounded hover:bg-blue-600 cursor-pointer;
   }
 
   .disabled {

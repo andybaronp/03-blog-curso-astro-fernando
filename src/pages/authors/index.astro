@@ -1,0 +1,16 @@
+---
+import { getCollection } from 'astro:content'
+import MainLayout from 'src/layouts/MainLayout.astro'
+import AuthorsCars from 'src/components/AuthorsCars.astro'
+import { siteConfig } from 'src/config/site-config'
+const authors = await getCollection('author')
+---
+
+<MainLayout title='Authors'>
+  <h1 class='text-3xl font-semibold capitalize lg:text-4xl text-white'>
+    {siteConfig.title}
+  </h1>
+  <div class='grid grid-cols-1 gap-8 mt-8 md:grid-cols-2'>
+    {authors.map((author) => <AuthorsCars autor={author} />)}
+  </div>
+</MainLayout>

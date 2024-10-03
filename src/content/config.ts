@@ -15,6 +15,8 @@ const blogColletion = defineCollection({
       //relacion
       tags: z.array(z.string()),
       author: reference('author'),
+
+      isDraft: z.boolean().default(false),
     }),
 })
 
@@ -24,8 +26,14 @@ const authorCollection = defineCollection({
     z.object({
       name: z.string(),
       avatar: image(),
+      bio: z.string(),
+      subtitle: z.string(),
+      twitter: z.string(),
+      linkedIn: z.string(),
+      github: z.string(),
     }),
 })
+
 export const collections = {
   blog: blogColletion,
   author: authorCollection,
